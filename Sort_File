@@ -1,0 +1,127 @@
+
+/**
+ * Given the previously created collection of all Bible Books
+ * in the New Testament, create a program that is capable of
+ * sorting and displaying the Bible Books in either alphabetical
+ * order by book name, or order based on number of chapters.
+ * 
+ * The program should prompt the user for which sort they
+ * want to display.
+ */
+
+import java.io.FileWriter; //Import the FileWriter class
+import java.io.IOException; //Import exception class
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+
+public class Sort_File{
+    public static void main(String[]args) throws Exception {
+        BibleBook[] bookObject = new BibleBook[27]; // creates an array object and allocates memory for "bookObject" which holds 27 elements below
+        bookObject[0] = new BibleBook("The Gospel according to Matthew", 28, "Matthew talks of Jesus as the Savior of Jewish people and all of mankind.");
+        bookObject[1] = new BibleBook("The Gospel according to Mark", 16, "Mark tells about the actions of Jesus rather than Jesus' teachings.");
+        bookObject[2] = new BibleBook("The Gospel according to Luke", 24,"Luke recounts Jesus' ministry to Theophilus.");
+        bookObject[3] = new BibleBook("The Gospel according to John", 21, "John describes the miracles Jesus performs as proof that the Word of God exists within him.");
+        bookObject[4] = new BibleBook("The Acts of the Apostles", 28, "This book focuses on how Jesus' followers spread the word of him throughout the Earth.");
+        bookObject[5] = new BibleBook("Paul's Letter to the Romans", 16, "Paul visits Rome to share his understanding of Christianity.");
+        bookObject[6] = new BibleBook("Paul's First Letter to the Corinthians", 16, "The letter deals with issues in the church of a Christian faith.");
+        bookObject[7] = new BibleBook("Paul's Second Letter to the Corinthians", 13, "The letter discusses the attacks against Paul.");
+        bookObject[8] = new BibleBook("Paul's Letter to the Galatians", 6, "Paul discusses with Galatian churches the need to follow God, and not the Laws of Moses.");
+        bookObject[9] = new BibleBook("Paul's Letter to the Ephesians", 5, "Apostle Paul shares a message of unity through Jesus Christ.");
+        bookObject[10] = new BibleBook("Paul's Letter to the Philippians", 4, "Paul thanks the Philippians in his time of need.");
+        bookObject[11] = new BibleBook("Paul's Letter to the Colossians", 4, "Paul's letter addresses the false teachings at the Colossae church.");
+        bookObject[12] = new BibleBook("Paul's First Letter to the Thessalonians", 5, "Paul assures the Christians and answers their questions.");    
+        bookObject[13] = new BibleBook("Paul's Second Letter to the Thessalonians", 3, "Paul speaks again to the Thessalonica church.");
+        bookObject[14] = new BibleBook("Paul's First Letter to Timothy", 6, "Paul takes Timothy as his assistant for spreading the word.");
+        bookObject[15] = new BibleBook("Paul's Second Letter to Timothy", 4, "Paul's letter offers advice to Timothy.");
+        bookObject[16] = new BibleBook("Paul's Letter to Titus", 3, "Paul's letter gives advice to his assistant in Crete.");
+        bookObject[17] = new BibleBook("Paul's Letter to Philemon", 1, "Paul's recount of his interaction with Onesimus while in prison.");
+        bookObject[18] = new BibleBook("The Letter to the Hebrews", 13, "A letter written to address a group of Christians who were losing their faith.");
+        bookObject[19] = new BibleBook("The Letter from James", 5, "The letter offers instructions for how to be Christian.");
+        bookObject[20] = new BibleBook("The First Letter from Peter", 5, "The letter addresses the Christians who were being ostracized for their faith.");
+        bookObject[21] = new BibleBook("The Second Letter from Peter", 3, "The letter offers advice on how to deal with false prophets and teachings.");
+        bookObject[22] = new BibleBook("The First Letter of John", 5, "John attempts to encourage Christianity and warn against those who disrupt the teachings.");
+        bookObject[23] = new BibleBook("The Second Letter of John", 1, "The letter enforces a love for each other.");
+        bookObject[24] = new BibleBook("The Third Letter of John", 1, "The letter praises Gaius and warns him about Diotrephes.");
+        bookObject[25] = new BibleBook("The Letter from Jude", 1, "The letter recommending fighting for the gift of Christianity that was bestowed to the people.");
+        bookObject[26] = new BibleBook("The Revelation to John", 22, "The letter encourages faithfulness of Christianity during difficult times.");
+        
+        Scanner myInput = new Scanner(System.in); 
+        System.out.print("You are about to read through the books in the New Testament. \n");
+        System.out.print("Enter A to sort alphabetically by title or N to sort by number of chapters: ");
+        char userInput = myInput.next().charAt(0);
+        
+        if(userInput == 'A') {
+            titleSort(bookObject);  //calls the method called insertionSort passing the persons array and does the actions listed.
+            System.out.println("Sorting by title:");
+            for (BibleBook b : bookObject) {  
+                System.out.println(b);
+            }
+        }
+        else if(userInput == 'N') {
+            chapterSort(bookObject);
+            System.out.println("Sorting by chapters:");
+            for (BibleBook b : bookObject) {
+                System.out.println(b);
+            }
+        }
+        else {
+            System.out.println("Sorry. That entry is not valid.");
+            main(null);
+        }
+    }
+    
+    public static void titleSort(BibleBook[] bookObject) {
+        int in, out;
+        for (out = 1; out < bookObject.length; out++) {
+            BibleBook temp = bookObject[out];
+            in = out;
+            while (in > 0 && bookObject[in - 1].getTitle().toLowerCase().compareTo(temp.getTitle().toLowerCase()) > 0) {
+                bookObject[in] = bookObject[in - 1];
+                --in;
+            }
+            bookObject[in] = temp;
+        }
+    }
+    public static void chapterSort(BibleBook[] bookObject) {
+        int in, out;
+        for (out = 1; out < bookObject.length; out++) { 
+            BibleBook temp = bookObject[out];
+            in = out;
+            while (in > 0 && bookObject[in - 1].getChapter() > temp.getChapter()) {
+                bookObject[in] = bookObject[in - 1];
+                --in;
+            }
+            bookObject[in] = temp;
+        }
+    }
+}
+class BibleBook {
+    String bookName; // title of book
+    int bookChapters;    // chapters in book
+    String shortSummary;  //summary of book
+    
+    BibleBook(String bn, int c, String ss) {  //this is my contructor template based on the class
+        bookName = bn;
+        bookChapters = c;
+        shortSummary = ss;
+    }
+    String display() {  //this is a method template that tells how to display info to the user
+        String display;
+        display = bookName + " (" + bookChapters + " chapters)- " + shortSummary;
+        return display;
+    }
+    
+    public String toString() {
+        return bookName + " (" + bookChapters + " chapters)- " + shortSummary;
+    }
+    public String getTitle() {
+        return bookName;
+    }
+    public int getChapter() {
+        return bookChapters;
+    }
+
+  
+}
